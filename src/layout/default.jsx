@@ -1,6 +1,11 @@
 import { Container, Navbar, Nav, } from 'react-bootstrap';
 
 const DefaultLayout = ({ children }) => {
+
+  // Cambiar el tema de la aplicación a oscuro
+  const htmlElement = document.querySelector('html');
+  htmlElement.setAttribute('data-bs-theme', 'dark');
+
   return (
     <div>
       {/* Navbar */}
@@ -11,10 +16,10 @@ const DefaultLayout = ({ children }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/home">Inicio</Nav.Link>
-              <Nav.Link href="/login">login</Nav.Link>
+              <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="/register">Registro</Nav.Link>
-              {/* cerrar session */}
-              <Nav.Link href="/logout">Cerrar session</Nav.Link>
+              {/* cerrar sesión */}
+              <Nav.Link href="/logout">Cerrar sesión</Nav.Link>
               {/* <Nav.Link href="#contact">Contacto</Nav.Link> */}
             </Nav>
           </Navbar.Collapse>
@@ -22,7 +27,7 @@ const DefaultLayout = ({ children }) => {
       </Navbar>
 
       {/* Main Layout */}
-      <Container >
+      <Container className="mt-4">
         {children}
       </Container>
     </div>
