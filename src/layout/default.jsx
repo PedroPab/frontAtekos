@@ -27,9 +27,9 @@ const DefaultLayout = ({ children }) => {
       </Navbar>
 
       {/* Main Layout */}
-      <container style={{ flex: 1 }}>
+      <Container style={{ flex: 1 }}>
         {children}
-      </container>
+      </Container>
 
       <footer className={"text-center"}>
         <div className="d-flex justify-content-center">
