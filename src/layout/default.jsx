@@ -7,9 +7,9 @@ const DefaultLayout = ({ children }) => {
   htmlElement.setAttribute('data-bs-theme', 'dark');
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {/* Navbar */}
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar expand="lg">
         <Container>
           <Navbar.Brand href="#home">Atekoss</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -27,9 +27,15 @@ const DefaultLayout = ({ children }) => {
       </Navbar>
 
       {/* Main Layout */}
-      <Container className="mt-4">
+      <container style={{ flex: 1 }}>
         {children}
-      </Container>
+      </container>
+
+      <footer className={"text-center"}>
+        <div className="d-flex justify-content-center">
+          ( ˶ˆᗜˆ˵ )
+        </div>
+      </footer>
     </div>
   );
 };
