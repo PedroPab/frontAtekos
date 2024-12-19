@@ -16,7 +16,7 @@ const Login = () => {
   const location = useLocation();
 
   // Determinar la ruta de redirección (si existe)
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || '/me';
 
   const handleLogin = async (e) => {
     e.preventDefault();
