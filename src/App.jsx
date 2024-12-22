@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Me from './pages/Me';
 import Rooms from './pages/Rooms';
+import RoomDetail from './pages/RoomDetail';
+import NotFound from './pages/NotFound';
 
 const AppRoutes = () => {
   return (
@@ -15,6 +17,8 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/me" element={<Me />} />
       <Route path="/rooms" element={<Rooms />} />
+      <Route path="/rooms/:id" element={<RoomDetail />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

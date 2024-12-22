@@ -4,15 +4,16 @@ import DefaultLayout from '../layout/default';
 import RoomList from '../components/RoomList';
 import Messages from '../components/Messages';
 import { fetchRooms, switchRoomLight } from '../services/api';
-import { initializeWebSocket } from '../services/websocket';
+import { useWebSocket } from '../hooks/websocket';
 
 const Rooms = () => {
-  const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState('');
 
   const idUser = '1';
+
+
 
   useEffect(() => {
     const loadRooms = async () => {
@@ -25,11 +26,6 @@ const Rooms = () => {
     };
 
     loadRooms();
-
-    const ws = initializeWebSocket(handleWebSocketMessage, idUser);
-    setSocket(ws);
-
-    return () => ws.close();
   }, []);
 
   const handleWebSocketMessage = (message) => {
@@ -49,6 +45,9 @@ const Rooms = () => {
         console.log('Mensaje no manejado:', message);
     }
   };
+
+  const { isConnected, error, socket } = useWebSocket(handleWebSocketMessage, idUser);
+
 
   const handleSubscribe = (room) => {
     if (socket) {

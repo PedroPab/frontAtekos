@@ -10,3 +10,8 @@ export const fetchRooms = async () => {
 export const switchRoomLight = async (roomId) => {
   await axios.get(`${API_URL}/rooms/${roomId}/switchLight`);
 };
+
+export const fetchRoomById = async (roomId) => {
+  const response = await axios.get(`${API_URL}/rooms/${roomId}`);
+  return response.data;
+}
