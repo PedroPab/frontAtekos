@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 
+const VITE_PUBLIC_WEB_SOCKET_URL = import.meta.env.VITE_PUBLIC_WEB_SOCKET_URL;
+
 export const useWebSocket = (onMessage, userId) => {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3012');
+    const ws = new WebSocket(VITE_PUBLIC_WEB_SOCKET_URL);
 
     ws.addEventListener('open', () => {
       console.log('%cConectado al servidor WebSocket', 'color: green');
