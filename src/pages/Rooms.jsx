@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Button, ListGroup, Alert, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import DefaultLayout from '../layout/default';
-import axios from 'axios';
+import RoomList from '../components/RoomList';
+import Messages from '../components/Messages';
+import { fetchRooms, switchRoomLight } from '../services/api';
+import { initializeWebSocket } from '../services/websocket';
 
 const Rooms = () => {
   const [socket, setSocket] = useState(null);
@@ -9,84 +12,56 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState('');
 
+  const idUser = '1';
+
   useEffect(() => {
-    // Fetch rooms from API
-    const fetchRooms = async () => {
+    const loadRooms = async () => {
       try {
-        const response = await axios.get('http://localhost:3012/api/v1/rooms');
-        setRooms(response.data);
+        const roomsData = await fetchRooms();
+        setRooms(roomsData);
       } catch (error) {
-        console.error('Error fetching rooms:', error);
+        console.error('Error al cargar las salas:', error);
       }
     };
 
-    fetchRooms();
+    loadRooms();
 
-    const ws = new WebSocket('ws://localhost:3012');
+    const ws = initializeWebSocket(handleWebSocketMessage, idUser);
     setSocket(ws);
 
-    // Connection opened
-    ws.addEventListener('open', () => {
-      console.log('%cConectado al servidor WebSocket', 'color: green');
-      const data = {
-        type: 'identify',
-        userId: '1'
-      };
-      ws.send(JSON.stringify(data));
-    });
-
-    // Listen for messages
-    ws.addEventListener('message', (event) => {
-      const message = JSON.parse(event.data);
-      console.log('Mensaje recibido:', message);
-      switch (message?.type || message?.event) {
-        case 'message':
-          setMessages((prevMessages) => [...prevMessages, message.data]);
-          break;
-        case 'room.update':
-          setRooms((prevRooms) =>
-            prevRooms.map((room) =>
-              room.id === message.data.id ? message.data : room
-            )
-          );
-          break;
-        case 'room.create':
-          setRooms((prevRooms) => [...prevRooms, message.data]);
-          break;
-        default:
-          console.log('Mensaje no manejado:', message);
-          break;
-      }
-    });
-
-    ws.addEventListener('close', () => {
-      console.log('%cDesconectado del servidor WebSocket', 'color: red');
-    });
-
-    ws.addEventListener('error', (error) => {
-      console.error('%cError en la conexión WebSocket:', 'color: red', error);
-    });
-
-    return () => {
-      ws.close();
-    };
+    return () => ws.close();
   }, []);
+
+  const handleWebSocketMessage = (message) => {
+    switch (message?.type || message?.event) {
+      case 'message':
+        setMessages((prev) => [...prev, message.data]);
+        break;
+      case 'room.update':
+        setRooms((prev) =>
+          prev.map((room) => (room.id === message.data.id ? message.data : room))
+        );
+        break;
+      case 'room.create':
+        setRooms((prev) => [...prev, message.data]);
+        break;
+      default:
+        console.log('Mensaje no manejado:', message);
+    }
+  };
 
   const handleSubscribe = (room) => {
     if (socket) {
-      const data = {
-        type: 'subscribe',
-        event: 'room.update',
-        room: room
-      };
-      socket.send(JSON.stringify(data));
+      socket.send(
+        JSON.stringify({ type: 'subscribe', event: 'room.update', room })
+      );
       console.log(`Suscrito a la sala ${room}`);
     }
   };
 
   const handleSwitchLight = async (roomId) => {
     try {
-      await axios.get(`http://localhost:3012/api/v1/rooms/${roomId}/switchLight`);
+      await switchRoomLight(roomId);
       console.log(`Estado de la sala ${roomId} cambiado`);
     } catch (error) {
       console.error('Error al cambiar el estado de la sala:', error);
@@ -99,54 +74,15 @@ const Rooms = () => {
         <Row>
           <Col md={8}>
             <h2>Salas Disponibles</h2>
-            <ListGroup>
-              {rooms.map((room, index) => {
-                console.log(room);
-                return (
-                  <ListGroup.Item key={index}>
-                    <Card>
-                      <Card.Body>
-                        <Card.Title>{room.name}</Card.Title>
-                        <Card.Text>
-                          {room.description}
-                        </Card.Text>
-                        <Card.Text>
-                          <strong>ID:</strong> {room.id}
-                        </Card.Text>
-                        <Card.Text>
-                          <strong>Estado:</strong> {room.state ? 'Activo' : 'Inactivo'}
-                        </Card.Text>
-                        <Card.Text>
-                          <strong>Fecha de Creación:</strong> {new Date(room.dateCreate).toLocaleString()}
-                        </Card.Text>
-                        <Card.Text>
-                          <strong>Última Actualización:</strong> {new Date(room.dateUpdate).toLocaleString()}
-                        </Card.Text>
-                        <Button variant="primary"
-                          onClick={() => handleSubscribe(room.id)}>Unirse</Button>
-                        <Button variant="secondary" className="ms-2" onClick={() => handleSwitchLight(room.id)}>
-                          Cambiar Estado
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </ListGroup.Item>
-                )
-              })}
-            </ListGroup>
+            <RoomList
+              rooms={rooms}
+              onSubscribe={handleSubscribe}
+              onSwitchLight={handleSwitchLight}
+            />
           </Col>
           <Col md={4}>
             <h2>Mensajes Recibidos</h2>
-            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-              {messages.length > 0 ? (
-                messages.map((msg, index) => (
-                  <Alert key={index} variant="info">
-                    {msg}
-                  </Alert>
-                ))
-              ) : (
-                <p>No hay mensajes recibidos.</p>
-              )}
-            </div>
+            <Messages messages={messages} />
             <h2 className="mt-4">Suscribirse a una Sala</h2>
             <Form>
               <Form.Group controlId="formRoomId">
@@ -158,7 +94,11 @@ const Rooms = () => {
                   onChange={(e) => setRoomId(e.target.value)}
                 />
               </Form.Group>
-              <Button variant="primary" className="mt-3" onClick={() => handleSubscribe(roomId)}>
+              <Button
+                variant="primary"
+                className="mt-3"
+                onClick={() => handleSubscribe(roomId)}
+              >
                 Suscribirse
               </Button>
             </Form>
