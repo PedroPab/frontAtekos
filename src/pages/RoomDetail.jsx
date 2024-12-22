@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import DefaultLayout from '../layout/default';
 import { fetchRoomById, switchRoomLight } from '../services/api';
 import { useWebSocket } from '../hooks/websocket';
+import LampControl from '../components/LampControl';
 
 const RoomDetail = () => {
   const { id } = useParams();
@@ -65,28 +66,8 @@ const RoomDetail = () => {
       <Container className="mt-5">
         {room ? (
           <Row>
-            <Col md={8}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>{room.name}</Card.Title>
-                  <Card.Text>{room.description}</Card.Text>
-                  <Card.Text>
-                    <strong>ID:</strong> {room.id}
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>Estado:</strong> {room.state ? 'Activo' : 'Inactivo'}
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>Fecha de Creación:</strong> {new Date(room.dateCreate).toLocaleString()}
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>Última Actualización:</strong> {new Date(room.dateUpdate).toLocaleString()}
-                  </Card.Text>
-                  <Button variant="secondary" onClick={handleSwitchLight}>
-                    Cambiar Estado
-                  </Button>
-                </Card.Body>
-              </Card>
+            <Col md={12}>
+              <LampControl name={room.name} state={room.state} toggleLamp={handleSwitchLight} />
             </Col>
           </Row>
         ) : (
