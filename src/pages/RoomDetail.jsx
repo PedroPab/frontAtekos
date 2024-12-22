@@ -63,9 +63,9 @@ const RoomDetail = () => {
 
   return (
     <DefaultLayout>
-      <Container className="mt-5">
+      <Container className="d-flex justify-content-center align-items-center vh-100">
         {room ? (
-          <Row>
+          <Row className="w-100">
             <Col md={12}>
               <LampControl name={room.name} state={room.state} toggleLamp={handleSwitchLight} />
             </Col>
