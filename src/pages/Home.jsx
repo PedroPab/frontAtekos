@@ -15,33 +15,16 @@ const Home = () => {
           <Col md={4}>
             <Card>
               <Card.Body>
-                <Card.Title>Característica 1</Card.Title>
+                <Card.Title>Rooms</Card.Title>
                 <Card.Text>
-                  Descripción breve de la característica 1.
+                  <p>
+                    Tengo varios dispositivos conectados por websockets, solo llamo &apos;Rooms&apos; porque el primero enciende la luz de mi cuarto.
+                  </p>
+                  <p>
+                    Aquí puedes ver todos estos dispositivos y sus tipos
+                  </p>
                 </Card.Text>
-                <Button variant="primary">Ver más</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Característica 2</Card.Title>
-                <Card.Text>
-                  Descripción breve de la característica 2.
-                </Card.Text>
-                <Button variant="primary">Ver más</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Característica 3</Card.Title>
-                <Card.Text>
-                  Descripción breve de la característica 3.
-                </Card.Text>
-                <Button variant="primary">Ver más</Button>
+                <Button variant="primary" href="/rooms">Ver más</Button>
               </Card.Body>
             </Card>
           </Col>

@@ -16,6 +16,7 @@ const DefaultLayout = ({ children }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/home">Inicio</Nav.Link>
+              <Nav.Link href="/rooms">Rooms</Nav.Link>
               <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="/register">Registro</Nav.Link>
               {/* cerrar sesión */}
