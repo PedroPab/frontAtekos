@@ -1,6 +1,7 @@
 import { Card, Button, ListGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const RoomList = ({ rooms, onSubscribe, onSwitchLight }) => (
+const RoomList = ({ rooms, onSubscribe }) => (
   <ListGroup>
     {rooms.map((room, index) => (
       <ListGroup.Item key={index}>
@@ -22,11 +23,11 @@ const RoomList = ({ rooms, onSubscribe, onSwitchLight }) => (
               Unirse
             </Button>
             <Button
+              href={`/rooms/${room.id}`}
               variant="secondary"
               className="ms-2"
-              onClick={() => onSwitchLight(room.id)}
             >
-              Cambiar Estado
+              Ver mas
             </Button>
           </Card.Body>
         </Card>
@@ -34,5 +35,18 @@ const RoomList = ({ rooms, onSubscribe, onSwitchLight }) => (
     ))}
   </ListGroup>
 );
+
+RoomList.propTypes = {
+  rooms: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      state: PropTypes.bool,
+      dateUpdate: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onSubscribe: PropTypes.func.isRequired,
+};
 
 export default RoomList;
