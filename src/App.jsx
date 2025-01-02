@@ -7,6 +7,7 @@ import Me from './pages/Me';
 import Rooms from './pages/Rooms';
 import RoomDetail from './pages/RoomDetail';
 import NotFound from './pages/NotFound';
+import Focus from './pages/Focus';
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/me" element={<Me />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetail />} />
+      <Route path="/focus" element={<Focus />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

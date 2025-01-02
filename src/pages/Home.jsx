@@ -12,7 +12,7 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={4}>
+          <Col md={4} className="mb-4">
             <Card>
               <Card.Body>
                 <Card.Title>Rooms</Card.Title>
@@ -25,6 +25,22 @@ const Home = () => {
                   </p>
                 </Card.Text>
                 <Button variant="primary" href="/rooms">Ver más</Button>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4} className="mb-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>Focus</Card.Title>
+                <Card.Text>
+                  <p>
+                    Visualiza los Proyectos y Elementos en el que tienes un enfoque.
+                  </p>
+                  <p>
+                    También puedes crear tus &apos;Focus&apos; propios
+                  </p>
+                </Card.Text>
+                <Button variant="primary" href="/focus">Ver más</Button>
               </Card.Body>
             </Card>
           </Col>
