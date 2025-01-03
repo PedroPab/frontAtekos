@@ -1,9 +1,11 @@
 import { Col, Container, Row, Pagination, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import focusService from "../api/focusService";
 import FocusCard from "../components/FocusCard";
+import FocusModal from "../components/FocusModal";
+import PaginationModal from "../components/PaginationModal";
 
 const Focus = () => {
   const [focusList, setFocusList] = useState([]);
@@ -12,7 +14,32 @@ const Focus = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
   const limit = 5;
-  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [newFocus, setNewFocus] = useState({ name: '', description: '', id: '' });
+  const [showPaginationModal, setShowPaginationModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleShowPaginationModal = () => setShowPaginationModal(true);
+  const handleClosePaginationModal = () => setShowPaginationModal(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewFocus({ ...newFocus, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await focusService.createFocus(newFocus);
+      setFocusList([...focusList, newFocus]);
+      handleCloseModal();
+    } catch (error) {
+      console.log('Error creating focus:', error);
+      setError('Error creating focus');
+    }
+  };
 
   useEffect(() => {
     const fetchFocus = async () => {
@@ -32,10 +59,6 @@ const Focus = () => {
 
   const handlePageChange = (newPage) => {
     setSearchParams({ page: newPage });
-  };
-
-  const handleCardClick = (id) => {
-    navigate(`/focus/${id}`);
   };
 
   return (
@@ -64,7 +87,7 @@ const Focus = () => {
         <Row className="g-3">
           {/* Tarjeta para crear un nuevo focus */}
           <Col xs={12} sm={6} lg={4}>
-            <Card className="h-100 shadow-sm border-10">
+            <Card className="h-100 shadow-sm border-10" onClick={handleShowModal}>
               <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                 <Card.Title className="fs-1">+</Card.Title>
                 <Card.Text className="text-muted text-center">
@@ -81,13 +104,28 @@ const Focus = () => {
           ))}
         </Row>
 
-        {/* Pagination */}
-        <Pagination className="justify-content-center mt-4">
-          <Pagination.Prev onClick={() => handlePageChange(page - 1)} disabled={page === 1} />
-          <Pagination.Item active>{page}</Pagination.Item>
-          <Pagination.Next onClick={() => handlePageChange(page + 1)} />
-        </Pagination>
+        {/* Botón para abrir el modal de paginación */}
+        <div className="text-center mt-4">
+          <button className="btn btn-primary" onClick={handleShowPaginationModal}>
+            Cambiar página
+          </button>
+        </div>
       </Container>
+
+      <FocusModal
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        newFocus={newFocus}
+      />
+
+      <PaginationModal
+        showModal={showPaginationModal}
+        handleCloseModal={handleClosePaginationModal}
+        page={page}
+        handlePageChange={handlePageChange}
+      />
     </DefaultLayout>
   );
 };
