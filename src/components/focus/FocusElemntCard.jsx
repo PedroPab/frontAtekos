@@ -38,12 +38,17 @@ const FocusElementCard = ({ element }) => {
           <p>{errorElementPure}</p>
         </div>
       ) : (
-        <Card.Img
-          variant="top"
-          src={srcElementPure}
-          alt={element.name}
-          style={{ height: '200px', objectFit: 'cover' }}
-        />
+        <div style={{ position: 'relative' }}>
+          <Card.Img
+            variant="top"
+            src={srcElementPure}
+            alt={element.name}
+            style={{ height: '200px', objectFit: 'cover' }}
+          />
+          <small className="text-muted" style={{ position: 'absolute', top: '10px', right: '10px' }}>
+            <span className="badge bg-light text-dark">{element.type}</span>
+          </small>
+        </div>
       )}
 
       <Card.Body className="d-flex flex-column justify-content-between">
@@ -55,10 +60,7 @@ const FocusElementCard = ({ element }) => {
               {element.state ? 'Activo' : 'Inactivo'}
             </span>
           </small>
-          <small className="text-muted">
-            <i className="bi bi-calendar-event me-1"></i>
-            {new Date(element.dateUpdate).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
-          </small>
+
           <small className="text-muted">
             <i className="bi bi-calendar-event me-1"></i>
             {element.id}

@@ -24,7 +24,11 @@ const FocusCard = ({ focus }) => {
               <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
                 {focus.state ? 'Activo' : 'Inactivo'}
               </small>
-              <small className="text-muted">ID: {focus.id}</small>
+              <small className="text-muted">
+                <i className="bi bi-calendar-event me-1"></i>
+                {new Date(focus.dateUpdate).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
+              </small>
+              <small className="text-muted"> {focus.id}</small>
             </div>
           </Card.Text>
         </div>
@@ -39,6 +43,7 @@ FocusCard.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     state: PropTypes.bool.isRequired,
+    dateUpdate: PropTypes.string.isRequired,
   }).isRequired,
 };
 
