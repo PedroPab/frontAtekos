@@ -57,7 +57,7 @@ const FocusDetails = () => {
       }
     }
     fetchFocusElements();
-  }, [id]);
+  }, [id, page]); // Agregar 'page' a la lista de dependencias
 
   const handleShowModal = () => {
     console.log('Show modal');
