@@ -20,7 +20,7 @@ const FocusCard = ({ focus }) => {
         </div>
         <div className="mt-2">
           <Card.Text>
-            <div className="d-flex justify-content-between">
+            <span className="d-flex justify-content-between">
               <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
                 {focus.state ? 'Activo' : 'Inactivo'}
               </small>
@@ -29,7 +29,7 @@ const FocusCard = ({ focus }) => {
                 {new Date(focus.dateUpdate).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
               </small>
               <small className="text-muted"> {focus.id}</small>
-            </div>
+            </span>
           </Card.Text>
         </div>
       </Card.Body>
@@ -39,7 +39,7 @@ const FocusCard = ({ focus }) => {
 
 FocusCard.propTypes = {
   focus: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     state: PropTypes.bool.isRequired,
