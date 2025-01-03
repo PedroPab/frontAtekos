@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import focusService from "../apis/focus/focusService";
+import FocusElementCard from "../components/focus/FocusElemntCard";
 
 const FocusDetails = () => {
   const { id } = useParams();
@@ -15,6 +16,7 @@ const FocusDetails = () => {
   const [errorElements, setErrorElements] = useState('');
 
 
+  //datos del focus
   useEffect(() => {
     const fetchFocusDetails = async () => {
       try {
@@ -31,6 +33,7 @@ const FocusDetails = () => {
     fetchFocusDetails();
   }, [id]);
 
+  //elementos del focus
   useEffect(() => {
     const fetchFocusElements = async () => {
       try {
@@ -75,14 +78,14 @@ const FocusDetails = () => {
         {errorElements && <p className="text-danger text-center">{errorElements}</p>}
         {focusElements.length > 0 && (
           <Row className="mt-5">
-            <Col md={8}>
-              <h2>Elementos del Focus</h2>
-              <ul>
-                {focusElements.map((element) => (
-                  <li key={element.id}>{element.name}</li>
-                ))}
-              </ul>
-            </Col>
+            <h2>Elementos del Focus</h2>
+            <ul>
+              {focusElements.map((element) => (
+                <Col xs={12} sm={6} lg={4} key={element.id}>
+                  <FocusElementCard key={element.id} element={element} />
+                </Col>
+              ))}
+            </ul>
           </Row>
         )}
       </Container>

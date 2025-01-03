@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
+const API_URL = import.meta.env.VITE_PUBLIC_API_URL + '/api/v1';
 
 export const fetchRooms = async () => {
   const response = await axios.get(`${API_URL}/rooms`);
