@@ -35,9 +35,14 @@ const focusService = {
     }
   },
 
-  getAllFocusElements: async (id) => {
+  getAllFocusElements: async (id, pagination) => {
     try {
-      const response = await apiClient.get(`/focusProjects/${id}/elements`);
+      const { page, limit } = pagination || {};
+      const query = new URLSearchParams();
+      if (page) query.append('page', page);
+      if (limit) query.append('limit', limit);
+
+      const response = await apiClient.get(`/focusProjects/${id}/elements?${query.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching focus elements:', error);

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import focusService from "../apis/focus/focusService";
 import FocusElementCard from "../components/focus/FocusElemntCard";
+import PaginationComponent from "../components/PaginationComponent";
 
 const FocusDetails = () => {
   const { id } = useParams();
@@ -15,6 +16,13 @@ const FocusDetails = () => {
   const [loadingElements, setLoadingElements] = useState(true);
   const [errorElements, setErrorElements] = useState('');
 
+  //pagination
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = 5;
+  const handlePageChange = (newPage) => {
+    setSearchParams({ page: newPage });
+  };
 
   //datos del focus
   useEffect(() => {
@@ -37,7 +45,7 @@ const FocusDetails = () => {
   useEffect(() => {
     const fetchFocusElements = async () => {
       try {
-        const data = await focusService.getAllFocusElements(id);
+        const data = await focusService.getAllFocusElements(id, { page, limit });
         setFocusElements(data);
       } catch (error) {
         console.log('Error fetching focus elements:', error);
@@ -79,15 +87,21 @@ const FocusDetails = () => {
         {focusElements.length > 0 && (
           <Row className="mt-5">
             <h2>Elementos del Focus</h2>
-            <ul>
-              {focusElements.map((element) => (
-                <Col xs={12} sm={6} lg={4} key={element.id}>
-                  <FocusElementCard key={element.id} element={element} />
-                </Col>
-              ))}
-            </ul>
+            {focusElements.map((element) => (
+              <Col xs={12} sm={6} lg={4} key={element.id}>
+                <FocusElementCard key={element.id} element={element} />
+              </Col>
+            ))}
           </Row>
         )}
+
+        {/* pagination */}
+        <div className="text-center mt-4">
+          <PaginationComponent
+            page={page}
+            handlePageChange={handlePageChange}
+          />
+        </div>
       </Container>
     </DefaultLayout>
   );

@@ -1,11 +1,11 @@
-import { Col, Container, Row, Pagination, Card } from "react-bootstrap";
+import { Col, Container, Row, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import focusService from "../apis/focus/focusService";
 import FocusCard from "../components/FocusCard";
 import FocusModal from "../components/FocusModal";
-import PaginationModal from "../components/PaginationModal";
+import PaginationComponent from "../components/PaginationComponent";
 
 const Focus = () => {
   const [focusList, setFocusList] = useState([]);
@@ -16,13 +16,10 @@ const Focus = () => {
   const limit = 5;
   const [showModal, setShowModal] = useState(false);
   const [newFocus, setNewFocus] = useState({ name: '', description: '', id: '' });
-  const [showPaginationModal, setShowPaginationModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  const handleShowPaginationModal = () => setShowPaginationModal(true);
-  const handleClosePaginationModal = () => setShowPaginationModal(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,11 +101,12 @@ const Focus = () => {
           ))}
         </Row>
 
-        {/* Botón para abrir el modal de paginación */}
+        {/* pagination */}
         <div className="text-center mt-4">
-          <button className="btn btn-primary" onClick={handleShowPaginationModal}>
-            Cambiar página
-          </button>
+          <PaginationComponent
+            page={page}
+            handlePageChange={handlePageChange}
+          />
         </div>
       </Container>
 
@@ -120,12 +118,7 @@ const Focus = () => {
         newFocus={newFocus}
       />
 
-      <PaginationModal
-        showModal={showPaginationModal}
-        handleCloseModal={handleClosePaginationModal}
-        page={page}
-        handlePageChange={handlePageChange}
-      />
+
     </DefaultLayout>
   );
 };

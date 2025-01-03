@@ -26,7 +26,7 @@ const FocusElementCard = ({ element }) => {
   }, [element.elementPureId]);
 
   return (
-    <Card className="h-100 shadow-sm border-0 hover-shadow">
+    <Card className="h-100 shadow-sm border-10 hover-shadow">
       {loadingElementPure ? (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
           <Spinner animation="border" role="status">
@@ -46,7 +46,7 @@ const FocusElementCard = ({ element }) => {
         />
       )}
 
-      <Card.Body>
+      <Card.Body className="d-flex flex-column justify-content-between">
         <Card.Title className="text-truncate">{element.name}</Card.Title>
         <Card.Text className="text-truncate">{element.description || 'Sin descripción disponible.'}</Card.Text>
         <div className="d-flex justify-content-between align-items-center mt-3">
