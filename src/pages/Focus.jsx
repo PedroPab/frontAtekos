@@ -3,9 +3,10 @@ import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import focusService from "../apis/focus/focusService";
-import FocusCard from "../components/FocusCard";
-import FocusModal from "../components/FocusModal";
+import FocusCard from "../components/focus/FocusCard";
+import CreateFocusModal from "../components/focus/CreateFocusModal";
 import PaginationComponent from "../components/PaginationComponent";
+import CardCreate from "../components/CardCreate";
 
 const Focus = () => {
   const [focusList, setFocusList] = useState([]);
@@ -84,14 +85,7 @@ const Focus = () => {
         <Row className="g-3">
           {/* Tarjeta para crear un nuevo focus */}
           <Col xs={12} sm={6} lg={4}>
-            <Card className="h-100 shadow-sm border-10" onClick={handleShowModal}>
-              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                <Card.Title className="fs-1">+</Card.Title>
-                <Card.Text className="text-muted text-center">
-                  Crear nuevo focus
-                </Card.Text>
-              </Card.Body>
-            </Card>
+            <CardCreate handleShowModal={handleShowModal} messageText='Crear un nuevo focus' />
           </Col>
           {/* Lista de focus */}
           {!loading && !error && focusList.map((focus) => (
@@ -110,15 +104,13 @@ const Focus = () => {
         </div>
       </Container>
 
-      <FocusModal
+      <CreateFocusModal
         showModal={showModal}
         handleCloseModal={handleCloseModal}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         newFocus={newFocus}
       />
-
-
     </DefaultLayout>
   );
 };

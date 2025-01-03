@@ -5,6 +5,7 @@ import DefaultLayout from "../layout/default";
 import focusService from "../apis/focus/focusService";
 import FocusElementCard from "../components/focus/FocusElemntCard";
 import PaginationComponent from "../components/PaginationComponent";
+import CardCreate from "../components/CardCreate";
 
 const FocusDetails = () => {
   const { id } = useParams();
@@ -57,6 +58,10 @@ const FocusDetails = () => {
     fetchFocusElements();
   }, [id]);
 
+  const handleShowModal = () => {
+    console.log('Show modal');
+  }
+
   return (
     <DefaultLayout>
       <Container className="mt-5">
@@ -81,17 +86,26 @@ const FocusDetails = () => {
           </Row>
         )}
 
+        {/* Lista
         {/* visualizar elementos del focus */}
         {loadingElements && <p className="text-center">Loading...</p>}
         {errorElements && <p className="text-danger text-center">{errorElements}</p>}
         {focusElements.length > 0 && (
           <Row className="mt-5">
             <h2>Elementos del Focus</h2>
-            {focusElements.map((element) => (
-              <Col xs={12} sm={6} lg={4} key={element.id}>
-                <FocusElementCard key={element.id} element={element} />
+            <Row className="g-3">
+              <Col xs={12} sm={6} lg={4}>
+                <CardCreate handleShowModal={handleShowModal}
+                  messageText='Crear un nuevo elemento'
+                />
+
               </Col>
-            ))}
+              {focusElements.map((element) => (
+                <Col xs={12} sm={6} lg={4} key={element.id}>
+                  <FocusElementCard key={element.id} element={element} />
+                </Col>
+              ))}
+            </Row>
           </Row>
         )}
 

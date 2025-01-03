@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Modal, Button, Form } from "react-bootstrap";
 
-const FocusModal = ({ showModal, handleCloseModal, handleSubmit, handleChange, newFocus }) => {
+const CreateFocusModal = ({ showModal, handleCloseModal, handleSubmit, handleChange, newFocus }) => {
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
@@ -51,7 +51,7 @@ const FocusModal = ({ showModal, handleCloseModal, handleSubmit, handleChange, n
   );
 };
 
-FocusModal.propTypes = {
+CreateFocusModal.propTypes = {
   showModal: PropTypes.bool.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -63,4 +63,4 @@ FocusModal.propTypes = {
   }).isRequired,
 };
 
-export default FocusModal;
+export default CreateFocusModal;
