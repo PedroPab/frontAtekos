@@ -3,6 +3,7 @@ import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import focusService from "../api/focusService";
+import FocusCard from "../components/FocusCard";
 
 const Focus = () => {
   const [focusList, setFocusList] = useState([]);
@@ -75,26 +76,7 @@ const Focus = () => {
           {/* Lista de focus */}
           {!loading && !error && focusList.map((focus) => (
             <Col xs={12} sm={6} lg={4} key={focus.id}>
-              <Card className="h-100 shadow-sm border-10" onClick={() => handleCardClick(focus.id)} style={{ cursor: 'pointer' }}>
-                <Card.Body className="d-flex flex-column justify-content-between">
-                  <div>
-                    <Card.Title className="fs-5 text-truncate">{focus.name}</Card.Title>
-                    <Card.Text className="text-muted">
-                      {focus.description.length > 100 ? `${focus.description.substring(0, 100)}...` : focus.description}
-                    </Card.Text>
-                  </div>
-                  <div className="mt-2">
-                    <Card.Text>
-                      <div className="d-flex justify-content-between">
-                        <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
-                          {focus.state ? 'Activo' : 'Inactivo'}
-                        </small>
-                        <small className="text-muted">ID: {focus.id}</small>
-                      </div>
-                    </Card.Text>
-                  </div>
-                </Card.Body>
-              </Card>
+              <FocusCard focus={focus} />
             </Col>
           ))}
         </Row>
