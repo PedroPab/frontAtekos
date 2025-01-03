@@ -1,4 +1,4 @@
-import { Col, Container, Row, Form, Button, Pagination, Card } from "react-bootstrap";
+import { Col, Container, Row, Pagination, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -35,49 +35,64 @@ const Focus = () => {
   return (
     <DefaultLayout>
       <Container className="mt-5">
-        <Row className="justify-content-center">
-          <Col md={8}>
-            <h1>Focus</h1>
-
-            {/* Lista de cards de los focus */}
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {!loading && !error && (
-              <Row>
-                {focusList.map((focus) => (
-                  <Col md={6} lg={4} className="mb-4" key={focus.id}>
-                    <Card className="h-100 shadow-sm">
-                      <Card.Body>
-                        <Card.Title>{focus.name}</Card.Title>
-                        <Card.Text>{focus.description}</Card.Text>
-                        <Card.Text>
-                          <small className="text-muted">Creado: {new Date(focus.dateCreate).toLocaleDateString()}</small>
-                        </Card.Text>
-                        <Card.Text>
-                          <small className="text-muted">Actualizado: {new Date(focus.dateUpdate).toLocaleDateString()}</small>
-                        </Card.Text>
-                        <Card.Text>
-                          <small className={`text-${focus.state ? 'success' : 'danger'}`}>
-                            Estado: {focus.state ? 'Activo' : 'Inactivo'}
-                          </small>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            )}
-            {/* Sistema de paginación */}
-            <Pagination className="justify-content-center mt-4">
-              <Pagination.Prev onClick={() => handlePageChange(page - 1)} disabled={page === 1} />
-              <Pagination.Item active>{page}</Pagination.Item>
-              <Pagination.Next onClick={() => handlePageChange(page + 1)} />
-            </Pagination>
+        {/* Título centrado */}
+        <Row className="text-center mb-4">
+          <Col>
+            <h1 className="display-4 fw-bold">Focus</h1>
           </Col>
         </Row>
+
+        {/* Párrafo explicativo destacado */}
+        <Row className="justify-content-center mb-5">
+          <Col md={10} lg={8}>
+            <div className="p-4  rounded shadow-sm text-center">
+              <p className="mb-0">
+                Los focus son espacios donde puedes organizar elementos o conjuntos que tengan un objetivo en común, como una serie de fotos de un cultivo o información específica de una temática.
+              </p>
+            </div>
+          </Col>
+        </Row>
+
+        {loading && <p className="text-center">Loading...</p>}
+        {error && <p className="text-danger text-center">{error}</p>}
+        {!loading && !error && (
+          <Row className="g-3">
+            {focusList.map((focus) => (
+              <Col xs={12} sm={6} lg={4} key={focus.id}>
+                <Card className="h-100 shadow-sm border-10">
+                  <Card.Body className="d-flex flex-column justify-content-between">
+                    <div>
+                      <Card.Title className="fs-5 text-truncate">{focus.name}</Card.Title>
+                      <Card.Text className="text-muted">
+                        {focus.description.length > 100 ? `${focus.description.substring(0, 100)}...` : focus.description}
+                      </Card.Text>
+                    </div>
+                    <div className="mt-2">
+                      <Card.Text>
+                        <div className="d-flex justify-content-between">
+                          <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
+                            {focus.state ? 'Activo' : 'Inactivo'}
+                          </small>
+                          <small className="text-muted">ID: {focus.id}</small>
+                        </div>
+                      </Card.Text>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
+
+        {/* Pagination */}
+        <Pagination className="justify-content-center mt-4">
+          <Pagination.Prev onClick={() => handlePageChange(page - 1)} disabled={page === 1} />
+          <Pagination.Item active>{page}</Pagination.Item>
+          <Pagination.Next onClick={() => handlePageChange(page + 1)} />
+        </Pagination>
       </Container>
     </DefaultLayout>
   );
-}
+};
 
 export default Focus;
