@@ -1,4 +1,4 @@
-import apiClient from './config';
+import apiClient from '../config';
 
 const focusService = {
   getAllFocus: async (pagination) => {
@@ -31,6 +31,16 @@ const focusService = {
       return response.data;
     } catch (error) {
       console.error('Error fetching focus details:', error);
+      throw error;
+    }
+  },
+
+  getAllFocusElements: async (id) => {
+    try {
+      const response = await apiClient.get(`/focusProjects/${id}/elements`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching focus elements:', error);
       throw error;
     }
   },

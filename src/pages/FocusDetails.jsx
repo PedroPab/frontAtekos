@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
-import focusService from "../api/focusService";
+import focusService from "../apis/focus/focusService";
 
 const FocusDetails = () => {
   const { id } = useParams();
   const [focus, setFocus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const [focusElements, setFocusElements] = useState([]);
+  const [loadingElements, setLoadingElements] = useState(true);
+  const [errorElements, setErrorElements] = useState('');
+
 
   useEffect(() => {
     const fetchFocusDetails = async () => {
@@ -24,6 +29,21 @@ const FocusDetails = () => {
     };
 
     fetchFocusDetails();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchFocusElements = async () => {
+      try {
+        const data = await focusService.getAllFocusElements(id);
+        setFocusElements(data);
+      } catch (error) {
+        console.log('Error fetching focus elements:', error);
+        setErrorElements('Error fetching focus elements');
+      } finally {
+        setLoadingElements(false);
+      }
+    }
+    fetchFocusElements();
   }, [id]);
 
   return (
@@ -46,6 +66,22 @@ const FocusDetails = () => {
                   </div>
                 </Card.Body>
               </Card>
+            </Col>
+          </Row>
+        )}
+
+        {/* visualizar elementos del focus */}
+        {loadingElements && <p className="text-center">Loading...</p>}
+        {errorElements && <p className="text-danger text-center">{errorElements}</p>}
+        {focusElements.length > 0 && (
+          <Row className="mt-5">
+            <Col md={8}>
+              <h2>Elementos del Focus</h2>
+              <ul>
+                {focusElements.map((element) => (
+                  <li key={element.id}>{element.name}</li>
+                ))}
+              </ul>
             </Col>
           </Row>
         )}

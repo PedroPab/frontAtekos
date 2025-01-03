@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import DefaultLayout from '../layout/default';
-import { fetchRoomById, switchRoomLight } from '../services/api';
+import { fetchRoomById, switchRoomLight } from '../apis/rooms/api';
 import { useWebSocket } from '../hooks/websocket';
 import LampControl from '../components/LampControl';
 

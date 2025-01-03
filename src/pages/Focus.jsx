@@ -2,7 +2,7 @@ import { Col, Container, Row, Pagination, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import focusService from "../api/focusService";
+import focusService from "../apis/focus/focusService";
 import FocusCard from "../components/FocusCard";
 import FocusModal from "../components/FocusModal";
 import PaginationModal from "../components/PaginationModal";

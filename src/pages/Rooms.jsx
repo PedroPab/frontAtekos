@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import DefaultLayout from '../layout/default';
 import RoomList from '../components/RoomList';
 import Messages from '../components/Messages';
-import { fetchRooms, switchRoomLight } from '../services/api';
+import { fetchRooms, switchRoomLight } from '../apis/rooms/api';
 import { useWebSocket } from '../hooks/websocket';
 
 const Rooms = () => {
