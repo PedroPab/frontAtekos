@@ -1,7 +1,7 @@
 import { Col, Container, Row, Pagination, Card } from "react-bootstrap";
 import DefaultLayout from "../layout/default";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import focusService from "../api/focusService";
 
 const Focus = () => {
@@ -11,6 +11,7 @@ const Focus = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
   const limit = 5;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFocus = async () => {
@@ -30,6 +31,10 @@ const Focus = () => {
 
   const handlePageChange = (newPage) => {
     setSearchParams({ page: newPage });
+  };
+
+  const handleCardClick = (id) => {
+    navigate(`/focus/${id}`);
   };
 
   return (
@@ -55,34 +60,44 @@ const Focus = () => {
 
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-danger text-center">{error}</p>}
-        {!loading && !error && (
-          <Row className="g-3">
-            {focusList.map((focus) => (
-              <Col xs={12} sm={6} lg={4} key={focus.id}>
-                <Card className="h-100 shadow-sm border-10">
-                  <Card.Body className="d-flex flex-column justify-content-between">
-                    <div>
-                      <Card.Title className="fs-5 text-truncate">{focus.name}</Card.Title>
-                      <Card.Text className="text-muted">
-                        {focus.description.length > 100 ? `${focus.description.substring(0, 100)}...` : focus.description}
-                      </Card.Text>
-                    </div>
-                    <div className="mt-2">
-                      <Card.Text>
-                        <div className="d-flex justify-content-between">
-                          <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
-                            {focus.state ? 'Activo' : 'Inactivo'}
-                          </small>
-                          <small className="text-muted">ID: {focus.id}</small>
-                        </div>
-                      </Card.Text>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        )}
+        <Row className="g-3">
+          {/* Tarjeta para crear un nuevo focus */}
+          <Col xs={12} sm={6} lg={4}>
+            <Card className="h-100 shadow-sm border-10">
+              <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                <Card.Title className="fs-1">+</Card.Title>
+                <Card.Text className="text-muted text-center">
+                  Crear nuevo focus
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          {/* Lista de focus */}
+          {!loading && !error && focusList.map((focus) => (
+            <Col xs={12} sm={6} lg={4} key={focus.id}>
+              <Card className="h-100 shadow-sm border-10" onClick={() => handleCardClick(focus.id)} style={{ cursor: 'pointer' }}>
+                <Card.Body className="d-flex flex-column justify-content-between">
+                  <div>
+                    <Card.Title className="fs-5 text-truncate">{focus.name}</Card.Title>
+                    <Card.Text className="text-muted">
+                      {focus.description.length > 100 ? `${focus.description.substring(0, 100)}...` : focus.description}
+                    </Card.Text>
+                  </div>
+                  <div className="mt-2">
+                    <Card.Text>
+                      <div className="d-flex justify-content-between">
+                        <small className={`badge bg-${focus.state ? 'success' : 'danger'}`}>
+                          {focus.state ? 'Activo' : 'Inactivo'}
+                        </small>
+                        <small className="text-muted">ID: {focus.id}</small>
+                      </div>
+                    </Card.Text>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
 
         {/* Pagination */}
         <Pagination className="justify-content-center mt-4">

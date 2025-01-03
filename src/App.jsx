@@ -8,6 +8,7 @@ import Rooms from './pages/Rooms';
 import RoomDetail from './pages/RoomDetail';
 import NotFound from './pages/NotFound';
 import Focus from './pages/Focus';
+import FocusDetails from './pages/FocusDetails';
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetail />} />
       <Route path="/focus" element={<Focus />} />
+      <Route path="/focus/:id" element={<FocusDetails />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
