@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import HomeRoutes from './routes/HomeRoutes';
 import DashboardRoutes from './routes/DashboardRoutes';
 import RoomRoutes from './routes/RoomRoutes';
@@ -19,9 +20,11 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </HelmetProvider>
   )
 }
 
