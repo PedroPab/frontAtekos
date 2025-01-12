@@ -1,28 +1,18 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Me from './pages/Me';
-import Rooms from './pages/Rooms';
-import RoomDetail from './pages/RoomDetail';
-import NotFound from './pages/NotFound';
-import Focus from './pages/Focus';
-import FocusDetails from './pages/FocusDetails';
+import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import HomeRoutes from './routes/HomeRoutes';
+import DashboardRoutes from './routes/DashboardRoutes';
+import RoomRoutes from './routes/RoomRoutes';
+import FocusRoutes from './routes/FocusRoutes';
+import NotFoundRoute from './routes/NotFoundRoute';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/me" element={<Me />} />
-      <Route path="/rooms" element={<Rooms />} />
-      <Route path="/rooms/:id" element={<RoomDetail />} />
-      <Route path="/focus" element={<Focus />} />
-      <Route path="/focus/:id" element={<FocusDetails />} />
-      <Route path="*" element={<NotFound />} />
+      {HomeRoutes()}
+      {DashboardRoutes()}
+      {RoomRoutes()}
+      {FocusRoutes()}
+      {NotFoundRoute()}
     </Routes>
   );
 }
@@ -35,4 +25,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
