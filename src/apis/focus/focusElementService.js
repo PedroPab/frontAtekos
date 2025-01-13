@@ -1,16 +1,10 @@
 import apiClient from '../config';
-import FormData from 'form-data';
 
 const focusElementService = {
-  createElement: async (focusProjectId, elementData) => {
+  createElement: async (focusProjectId, elementFormData) => {
     try {
-      const formData = new FormData();
-      for (const key in elementData) {
-        formData.append(key, elementData[key]);
-      }
-
-      const response = await apiClient.post(`/focusProjects/${focusProjectId}/elements`, formData, {
-        headers: formData.getHeaders(),
+      const response = await apiClient.post(`/focusProjects/${focusProjectId}/elements`, elementFormData, {
+        headers: { "Content-Type": "multipart/form-data" }
       });
       return response.data;
     } catch (error) {
@@ -34,6 +28,5 @@ const focusElementService = {
     }
   },
 };
-
 
 export default focusElementService;

@@ -24,7 +24,7 @@ const FocusDetails = () => {
     name: '',
     description: '',
     photo: {},
-    type: '',
+    type: 'img',
   });
 
   //modal
@@ -48,11 +48,9 @@ const FocusDetails = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('name', newFocusElement.name);
-    console.table(e)
-    console.log(e)
     formData.append('photo', newFocusElement.photo);
-    console.log(newFocusElement.photo)
     formData.append('type', newFocusElement.type);
+    console.log(`[ ~ handleSubmit ~ newFocusElement]`, newFocusElement)
 
     try {
       await focusElementService.createElement(focus.id, formData);

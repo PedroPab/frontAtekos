@@ -65,7 +65,7 @@ CreateFocusElementModal.propTypes = {
   newFocusElement: PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['img', 'text']).isRequired,
     photo: PropTypes.object
   }).isRequired,
 };
