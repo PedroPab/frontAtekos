@@ -8,6 +8,7 @@ import PaginationComponent from "../components/PaginationComponent";
 import CardCreate from "../components/CardCreate";
 import FocusCard from "../components/focus/FocusCard";
 import CreateFocusElementModal from "../components/focus/CreateFocusElementModal";
+import focusElementService from "../apis/focus/focusElementService";
 
 const FocusDetails = () => {
   const { id } = useParams();
@@ -33,15 +34,28 @@ const FocusDetails = () => {
 
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
     console.log('name:', name, 'value:', value);
 
-    setNewFocusElement({ ...newFocusElement, [name]: value });
+    if (name === 'photo') {
+      setNewFocusElement({ ...newFocusElement, [name]: files[0] });
+    } else {
+      setNewFocusElement({ ...newFocusElement, [name]: value });
+    }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', newFocusElement.name);
+    console.table(e)
+    console.log(e)
+    formData.append('photo', newFocusElement.photo);
+    console.log(newFocusElement.photo)
+    formData.append('type', newFocusElement.type);
+
     try {
-      await focusService.createFocus(newFocusElement);
+      await focusElementService.createElement(focus.id, formData);
       setFocusElements([...focusElements, newFocusElement]);
       handleCloseModal();
     } catch (error) {
