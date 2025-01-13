@@ -7,6 +7,7 @@ import FocusElementCard from "../components/focus/FocusElementCard";
 import PaginationComponent from "../components/PaginationComponent";
 import CardCreate from "../components/CardCreate";
 import FocusCard from "../components/focus/FocusCard";
+import CreateFocusElementModal from "../components/focus/CreateFocusElementModal";
 
 const FocusDetails = () => {
   const { id } = useParams();
@@ -17,6 +18,37 @@ const FocusDetails = () => {
   const [focusElements, setFocusElements] = useState([]);
   const [loadingElements, setLoadingElements] = useState(true);
   const [errorElements, setErrorElements] = useState('');
+
+  const [newFocusElement, setNewFocusElement] = useState({
+    name: '',
+    description: '',
+    photo: {},
+    type: '',
+  });
+
+  //modal
+  const [showModal, setShowModal] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log('name:', name, 'value:', value);
+
+    setNewFocusElement({ ...newFocusElement, [name]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await focusService.createFocus(newFocusElement);
+      setFocusElements([...focusElements, newFocusElement]);
+      handleCloseModal();
+    } catch (error) {
+      console.log('Error creating focus:', error);
+      setError('Error creating focus');
+    }
+  };
 
   //pagination
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,11 +91,6 @@ const FocusDetails = () => {
     fetchFocusElements();
   }, [id, page]); // Agregar 'page' a la lista de dependencias
 
-  const handleShowModal = () => {
-    console.log('Show modal');
-    //abrimos un modal para crear un elemento nuevo en el focus
-
-  }
 
   return (
     <DefaultLayout>
@@ -110,6 +137,14 @@ const FocusDetails = () => {
             handlePageChange={handlePageChange}
           />
         </div>
+
+        <CreateFocusElementModal
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
+          newFocusElement={newFocusElement}
+        />
       </Container>
     </DefaultLayout>
   );
